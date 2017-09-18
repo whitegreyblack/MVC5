@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using MVCMovies.Models;
 using System;
 
-namespace MvcMovie
+namespace MVCMovies
 {
     public class Program
     {
