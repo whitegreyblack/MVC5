@@ -13,6 +13,12 @@ namespace MVCMovies.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            ViewData["Message"] = "My Movie List";
+            return View();
+        }
+
+        public IActionResult Welcome()
+        {
             return View();
         }
     }
