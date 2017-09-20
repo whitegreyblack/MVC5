@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContosoUniversity.Controllers
 {
@@ -26,12 +24,16 @@ namespace ContosoUniversity.Controllers
             string searchString,
             int? page)
         {
+            
             ViewData["CurrentSort"] = sortOrder;
+            // If sort name is null then set at lastname_desc else empty the string
             ViewData["NameSortParm"] =
                 String.IsNullOrEmpty(sortOrder) ? "LastName_desc" : "";
+            // If sortorder is equal to enrollment
             ViewData["DateSortParm"] =
                 sortOrder == "EnrollmentDate" ? "EnrollmentDate_desc" : "EnrollmentDate";
 
+            // no search string is given -- return page 1 as default
             if (searchString != null)
             {
                 page = 1;
@@ -43,20 +45,22 @@ namespace ContosoUniversity.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var students = from s in _context.Students
-                           select s;
+            // Set up queryable variable to use in searches
+            var students = from s in _context.Students select s;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstMidName.Contains(searchString));
+                // if last name or first/middle name contains search string then return the query list
+                students = students.Where(s => s.LastName.Contains(searchString) || s.FirstMidName.Contains(searchString));
             }
 
+            // Sorted by last name if no sort order given
             if (string.IsNullOrEmpty(sortOrder))
             {
                 sortOrder = "LastName";
             }
 
+            
             bool descending = false;
             if (sortOrder.EndsWith("_desc"))
             {
@@ -73,6 +77,7 @@ namespace ContosoUniversity.Controllers
                 students = students.OrderBy(e => EF.Property<object>(e, sortOrder));
             }
 
+            // Split the student list into 3 equivalent sizes if possible
             int pageSize = 3;
             return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(),
                 page ?? 1, pageSize));
@@ -81,17 +86,23 @@ namespace ContosoUniversity.Controllers
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            // needs id to find student due to id-student mapping -- cannot find student without
             if (id == null)
             {
                 return NotFound();
             }
 
+            // Query Statement:
+            //      First finds any enrolled classes and if found then includes the courses of enrollment
+            //      Set as notracking so we can use db as read-only for student details
+            //      SingleOrDefault -- Expects 0 or 1 items
             var student = await _context.Students
                 .Include(s => s.Enrollments)
                     .ThenInclude(e => e.Course)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.ID == id);
 
+            // Returns student or null
             if (student == null)
             {
                 return NotFound();
@@ -103,6 +114,7 @@ namespace ContosoUniversity.Controllers
         // GET: Students/Create
         public IActionResult Create()
         {
+            // Everything is loaded in Views()
             return View();
         }
 
@@ -116,6 +128,8 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
+                // checks the values entered in student create form
+                // if they are all valid then adds student and continues
                 if (ModelState.IsValid)
                 {
                     _context.Add(student);
@@ -136,12 +150,16 @@ namespace ContosoUniversity.Controllers
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            // Needs an id to continue due to mapping of id to student
             if (id == null)
             {
                 return NotFound();
             }
 
+            // Queries the student that matches the incoming id
             var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
+
+            // returns student or null
             if (student == null)
             {
                 return NotFound();
@@ -156,11 +174,16 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
         {
+            // Cannot edit if no id is given due to student-id mapping
             if (id == null)
             {
                 return NotFound();
             }
+
+            // Retrieves the student using id
             var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.ID == id);
+
+            // Allows client to handle async requests using same student form
             if (await TryUpdateModelAsync<Student>(
                 studentToUpdate,
                 "",
