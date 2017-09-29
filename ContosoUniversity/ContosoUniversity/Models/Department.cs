@@ -3,6 +3,26 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+/* Department
+        DepartmentID
+        Name
+        Budget
+        StartDate
+        InstructorID
+        RowVersion
+        Administrator
+        Courses
+*/
+/* Department
+        Administrator
+        DepartmentID
+        InstructorID
+        RowVersion
+        StartDate
+        Courses
+        Budget
+        Name
+*/
 namespace ContosoUniversity.Models
 {
     public class Department
