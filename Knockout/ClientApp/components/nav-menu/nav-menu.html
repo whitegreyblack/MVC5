@@ -6,6 +6,7 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' href='/'>Knockout</a>
         </div>
@@ -25,6 +26,11 @@
                 <li>
                     <a data-bind='attr: { href: router.link("/fetch-data") }, css: { active: route().page === "fetch-data" }'>
                         <span class='glyphicon glyphicon-th-list'></span> Fetch data
+                    </a>
+                </li>
+                <li>
+                    <a data-bind='attr: { href: router.link("/space-stats") }, css { active: route().page === "space-stats"" }'>
+                        <span class='glyphicon glyphicon-stats'></span> Spaceship
                     </a>
                 </li>
             </ul>
