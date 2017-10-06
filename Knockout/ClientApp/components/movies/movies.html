@@ -1,0 +1,25 @@
+<h1>Released Movies</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p data-bind='ifnot: movies'><em>Loading...</em></p>
+
+<table class='table' data-bind='if: movies'>
+    <thead>
+        <tr>
+            <th>City</th>
+            <th>Day</th>
+            <th>Title</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody data-bind='foreach: movies'>
+        <tr>
+            <td data-bind='text: city'></td>
+            <td data-bind='text: time'></td>
+            <td data-bind='text: name'></td>
+            <td data-bind='text: genre'></td>
+        </tr>
+    </tbody>
+        -->
+</table>

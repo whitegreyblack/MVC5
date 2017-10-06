@@ -7,6 +7,7 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' href='/'>Knockout</a>
         </div>
@@ -29,8 +30,13 @@
                     </a>
                 </li>
                 <li>
-                    <a data-bind='attr: { href: router.link("/space-stats") }, css { active: route().page === "space-stats"" }'>
+                    <a data-bind='attr: { href: router.link("/space-stats") }, css { active: route().page === "space-stats" }'>
                         <span class='glyphicon glyphicon-stats'></span> Spaceship
+                    </a>
+                </li>
+                <li>
+                    <a data-bind='attr: { href: router.link("/movies")}, css { active: route().page === "/movies" }'>
+                        <span class='glyphicon glyphicon-film'></span> Movies
                     </a>
                 </li>
             </ul>

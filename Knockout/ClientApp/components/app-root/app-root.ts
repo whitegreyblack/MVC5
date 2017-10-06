@@ -5,10 +5,11 @@ import navMenu from '../nav-menu/nav-menu';
 
 // Declare the client-side routing configuration
 const routes: Route[] = [
-    { url: '',              params: { page: 'home-page'       } },
-    { url: 'counter',       params: { page: 'counter-example' } },
-    { url: 'fetch-data',    params: { page: 'fetch-data'      } },
-    { url: 'space-stats',   params: { page: 'space-stats'     } }
+    { url: '', params: { page: 'home-page' } },
+    { url: 'counter', params: { page: 'counter-example' } },
+    { url: 'fetch-data', params: { page: 'fetch-data' } },
+    { url: 'space-stats', params: { page: 'space-stats' } },
+    { url: 'movies', params: { page: 'movies' } },
 ];
 
 class AppRootViewModel {
@@ -29,6 +30,7 @@ class AppRootViewModel {
         ko.components.register('counter-example', require('bundle-loader?lazy!../counter-example/counter-example'));
         ko.components.register('fetch-data', require('bundle-loader?lazy!../fetch-data/fetch-data'));
         ko.components.register('space-stats', require('bundle-loader?lazy!../space-stats/space-stats'));
+        ko.components.register('movies', require('bundle-loader?lazy!../movies/movies'));
     }
 
     // To support hot module replacement, this method unregisters the router and KO components.
