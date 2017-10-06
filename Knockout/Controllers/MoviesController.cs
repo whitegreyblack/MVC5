@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 
 namespace Knockout.Controllers
 {
     [Route("api/[controller]")]
     public class MoviesController : Controller
     {
+        private readonly int seed;
+        private readonly IEnumerable<ReleasedMovie> movies;
+
         private static string[] Cities = new[]
         {
             "Fargo", "Valley City", "Grand Forks", "Jamestown"
@@ -29,25 +33,29 @@ namespace Knockout.Controllers
             "Sci Fi", "Fantasy", "Romance", "Comedy", "Action", "Adventur", "Horror"
         };
 
-        [HttpGet("[action]")]
-        public IEnumerable<ReleasedMovie> ReleasedMovies()
+        public MoviesController()
         {
-            var rng = new Random();
+            Console.WriteLine("Hah");
 
+            seed = new Random().Next(100);
+            var rng = new Random(seed);
+
+            var client = new HttpClient();
             var times = rng.Next(Titles.Length);
-
-            return Enumerable.Range(1, 4).Select(index => new ReleasedMovie
+ 
+            movies = Enumerable.Range(1, 4).Select(index => new ReleasedMovie
             {
                 city = Cities[rng.Next(Cities.Length)],
                 time = "",
                 name = Titles[rng.Next(Titles.Length)],
                 genre = ""
-                //genre = new[]
-                //{
-                //    Genre[rng.Next(Genre.Length)],
-                //    Genre[rng.Next(Genre.Length)]
-                //}
             });
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<ReleasedMovie> ReleasedMovies()
+        {
+            return movies;
         }
 
         public class ReleasedMovie
